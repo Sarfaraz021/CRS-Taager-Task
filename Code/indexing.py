@@ -85,19 +85,18 @@ class DocumentIndexer:
         """Process all files in the data directory"""
         # Get all files
         txt_files = glob.glob(os.path.join(DATA_DIR, "**/*.txt"), recursive=True)
-        all_files = txt_files
         
-        if not all_files:
-            print(f"No PDF or JSON files found in {DATA_DIR}")
+        if not txt_files:
+            print(f"No files found in {DATA_DIR}")
             return
         
-        print(f"\nFound {len(all_files)} files to process ({len(pdf_files)} PDFs, {len(json_files)} JSONs)")
+        print(f"\nFound {len(txt_files)} files to process ({len(txt_files)} Txts")
         
         successful = 0
         failed = 0
         
-        with tqdm(total=len(all_files), desc="Processing files") as pbar:
-            for file_path in all_files:
+        with tqdm(total=len(txt_files), desc="Processing files") as pbar:
+            for file_path in txt_files:
                 try:
                     success = await self.process_file(file_path)
                     if success:
