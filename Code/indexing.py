@@ -5,7 +5,7 @@ import time
 from typing import List
 from dotenv import load_dotenv
 from tqdm import tqdm
-from pinecone import Pinecone, PodSpec
+from pinecone import Pinecone
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
