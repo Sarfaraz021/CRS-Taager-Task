@@ -23,8 +23,8 @@ class DocumentIndexer:
         self.vectorstore = self._get_or_create_index()
         
         self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=100
+            chunk_size=500,
+            chunk_overlap=50
         )
 
     def setup_environment(self):
