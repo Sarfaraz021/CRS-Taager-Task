@@ -88,7 +88,7 @@ CRS-Taager-Task/
 │   ├── api.py          # FastAPI implementation
 │   ├── app.py          # Core analysis workflow
 │   ├── indexing.py     # Data indexing utilities
-│   ├── prompt.py       # Analysis prompt templates
+│   ├── prompt.py       # Analysis prompt templates -> You can adjust it based on your requirements as well.
 │   └── var.env         # Environment variables
 ├── Data/               # Conversation data files
 ├── requirements.txt    # Python dependencies
