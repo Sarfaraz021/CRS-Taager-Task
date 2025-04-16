@@ -1,0 +1,271 @@
+{
+  "name": "Arabic Data Loading + Transcription + Translation",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        -380
+      ],
+      "id": "ed5b8591-819d-473a-911f-17c0d4d974bf",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "It0B1Z9STkVQrzWG",
+          "name": "Kai OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=hey transcribe it {{ $json.text }} in english"
+            },
+            {
+              "content": "Just give me translation, nothing else",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -200,
+        -140
+      ],
+      "id": "80d1f945-32e4-4742-9f94-dc65f207782b",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "It0B1Z9STkVQrzWG",
+          "name": "Kai OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "12mS9c2ZA03-FFVvECg1KYd8kNQ7HhlZx",
+          "mode": "list",
+          "cachedResultName": "Taager Data",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/12mS9c2ZA03-FFVvECg1KYd8kNQ7HhlZx"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        -380
+      ],
+      "id": "db1b16ad-b93c-4b21-9c19-7b4ec08b41cf",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "S8UWH9NiO4eRQYbt",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        80,
+        -380
+      ],
+      "id": "3793f4b7-3816-41ec-8dbe-1752b794afcf",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "S8UWH9NiO4eRQYbt",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message.content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        280,
+        -140
+      ],
+      "id": "46e73a7d-7bbb-418d-8efb-d6e06bbcb0c5",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "content[0]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        -140
+      ],
+      "id": "9063092a-accd-40d4-a60c-3407b68719a4",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "name": "file12",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "17N8Iac2oEIQR3m3FDPdi9uLGZBPcMhgH",
+          "mode": "list",
+          "cachedResultName": "Taager Data Transcriptions",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/17N8Iac2oEIQR3m3FDPdi9uLGZBPcMhgH"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        740,
+        -140
+      ],
+      "id": "a0cda0de-a598-446c-9b2c-56b25444e316",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "S8UWH9NiO4eRQYbt",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c1f7c017-6ecf-4716-b106-389053676218",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "65310fc452d63862932a7fedb39d12edf0d50c9ee345493cb5fa45dd609910fc"
+  },
+  "id": "gGVcAd6q7H3UNsAl",
+  "tags": []
+}
