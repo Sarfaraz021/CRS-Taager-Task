@@ -63,7 +63,7 @@ class DocumentIndexer:
             print(f"\nProcessing: {os.path.basename(file_path)}")
             
             
-            loader = TextLoader(file_path)
+            loader = TextLoader(file_path, encoding='utf-8')
             documents = loader.load()
             
             # Add common metadata to documents
