@@ -92,5 +92,6 @@ CRS-Taager-Task/
 │   └── var.env         # Environment variables
 ├── Data/               # Conversation data files
 ├── requirements.txt    # Python dependencies
-└── README.md           # Readme file  
+└── N8N Arabic Data Loading + Transcription + Translation Workflow # This folder contains n8n workflow that i used to load the audio data from google drive -> Trnscribed them -> translated them in english and saved them in an other google drive.
+├──README.md           # Readme file  
 ```
